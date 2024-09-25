@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>动态更新和删除列表项</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+            max-width: 600px;
+            margin: 20px auto;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        li {
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        li:last-child {
+            border-bottom: none;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 500px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        .input-content {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<h1>动态列表管理</h1>
+<ul id="myList"></ul>
+<div class="input-content">
+    <input type="text" id="itemInput" placeholder="添加新项">
+    <button id="addItem">添加项</button>
+</div>
+<script>
+    // 添加点击事件监听器到添加按钮
+    document.getElementById('addItem').addEventListener('click', function() {
+        var newItemText = document.getElementById('itemInput').value.trim();
+        // 检查输入框是否为空
+        if (newItemText) {
+            addItemToList(newItemText);
+            document.getElementById('itemInput').value = '';
+        } else {
+            alert('请输入列表项内容！');
+        }
+    });
+
+    // 定义添加新项到列表的函数
+    function addItemToList(text) {
+        var list = document.getElementById('myList');
+        var li = document.createElement('li');
+        var container = document.createElement('div'); // 创建一个容器来包裹内容和按钮
+        container.style.display = 'flex';
+        container.style.justifyContent = 'space-between';
+        container.style.alignItems = 'center';
+        container.style.width = '100%';
+
+        // 创建内容元素
+        var contentSpan = document.createElement('span');
+        contentSpan.textContent = text;
+
+        // 创建编辑按钮并添加点击事件监听器
+        var editButton = document.createElement('button');
+        editButton.textContent = '编辑';
+        editButton.style.margin = '0 10px'; // 为按钮添加一些间距
+        editButton.onclick = function() { editItem(li, text); };
+
+        // 创建删除按钮并添加点击事件监听器
+        var deleteButton = document.createElement('button');
+        deleteButton.textContent = '删除';
+        deleteButton.style.margin = '0 10px';
+        deleteButton.onclick = function() { deleteItem(li); };
+
+        // 将内容和按钮添加到容器中
+        container.appendChild(contentSpan);
+        container.appendChild(editButton);
+        container.appendChild(deleteButton);
+
+        // 将容器添加到列表项，然后将列表项添加到列表
+        li.appendChild(container);
+        list.appendChild(li);
+    }
+
+    // 定义编辑列表项的函数
+    function editItem(li, currentText) {
+        var newText = prompt('请输入新内容:', currentText);
+        if (newText && newText.trim() !== '') {
+            li.getElementsByTagName('span')[0].textContent = newText;
+        }
+    }
+
+    // 定义删除列表项的函数
+    function deleteItem(li) {
+        li.parentNode.removeChild(li);
+    }
+</script>
+</body>
+</html>

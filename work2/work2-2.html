@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <title>表格数据排序</title>
+  <style>
+    table {
+      width: 50%;
+      margin-top: 20px;
+      border: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #dfeefd;
+    }
+
+    th, td {
+      padding: 8px;
+      text-align: left;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    .add-button {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+<table id="myTable">
+  <tr>
+    <th>姓名</th>
+    <th>年龄</th>
+    <th>操作</th>
+  </tr>
+</table>
+<input type="text" id="nameInput" placeholder="姓名" />
+<input type="number" id="ageInput" placeholder="年龄" />
+<button id="addRow" class="add-button">添加数据</button>
+
+<script>
+  // 为添加按钮添加点击事件监听器
+  document.getElementById('addRow').addEventListener('click', function() {
+    var name = document.getElementById('nameInput').value; // 获取姓名输入值
+    var age = parseInt(document.getElementById('ageInput').value, 10); // 获取年龄输入值并转换为整数
+    var table = document.getElementById('myTable'); // 获取表格元素
+    var row = table.insertRow(); // 在表格中插入新行
+    var cell1 = row.insertCell(0); // 在新行中插入第一个单元格
+    var cell2 = row.insertCell(1);
+    var cell3 = row.insertCell(2);
+
+    cell1.textContent = name; // 设置第一个单元格的内容为姓名
+    cell2.textContent = age;
+    cell3.innerHTML = '<button class="delete-button">删除</button>';
+    document.getElementById('nameInput').value = ''; // 清空姓名输入框
+    document.getElementById('ageInput').value = ''; // 清空年龄输入框
+
+    // 为每个删除按钮添加点击事件监听器
+    var deleteButton = cell3.getElementsByTagName('button')[0];
+    deleteButton.addEventListener('click', function() {
+      row.parentNode.removeChild(row); // 删除当前行
+    });
+
+    sortTableByAge(); // 调用排序函数
+  });
+
+  // 定义按年龄升序排列表格的函数
+  function sortTableByAge() {
+    var table, rows, switching, i, x, y, shouldSwitch;
+    table = document.getElementById("myTable");
+    switching = true;
+    while (switching) {
+      switching = false;
+      rows = table.rows;
+      for (i = 1; i < (rows.length - 1); i++) {
+        shouldSwitch = false;
+        x = rows[i].getElementsByTagName("TD")[1]; // 获取当前行的年龄单元格
+        y = rows[i + 1].getElementsByTagName("TD")[1]; // 获取下一行的年龄单元格
+        if (parseInt(x.innerHTML) > parseInt(y.innerHTML)) {
+          shouldSwitch = true;
+          break;
+        }
+      }
+      if (shouldSwitch) {
+        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]); // 交换两行的位置
+        switching = true;
+      }
+    }
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>动态改变文档内容</title>
+</head>
+<body>
+<h1 id="title">初始标题</h1>
+<button id="changeTitle">改变标题</button>
+<div id="currentTime"></div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var changeTitleBtn = document.getElementById('changeTitle');
+        var currentTimeDiv = document.getElementById('currentTime');
+        var titleElement = document.getElementById('title');
+        var originalTitle = titleElement.textContent; // 保存原始标题
+        var isOriginal = true; // 标记当前是否为原始标题
+
+        changeTitleBtn.addEventListener('click', function() {
+            if (isOriginal) {
+                titleElement.textContent = "欢迎来到我的网站";
+                currentTimeDiv.textContent = new Date().toLocaleString();
+                isOriginal = false; // 改变状态
+            } else {
+                titleElement.textContent = originalTitle;
+                currentTimeDiv.textContent = '';
+                isOriginal = true; // 改变状态
+            }
+        });
+    });
+</script>
+</body>
+</html>
